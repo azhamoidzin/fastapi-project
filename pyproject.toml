@@ -5,6 +5,18 @@ description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
+    "aiosqlite>=0.21.0",
     "fastapi[all]>=0.115.12",
-    "sqlalchemy>=2.0.40",
+    "passlib[bcrypt]>=1.7.4",
+    "pydantic-settings>=2.8.1",
+    "python-jose[cryptography]>=3.4.0",
+    "sqlalchemy[asyncio]>=2.0.40",
+]
+
+[dependency-groups]
+dev = [
+    "mypy>=1.15.0",
+    "pylint>=3.3.6",
+    "types-passlib>=1.7.7.20250401",
+    "types-python-jose>=3.4.0.20250224",
 ]

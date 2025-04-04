@@ -5,6 +5,8 @@ build/
 dist/
 wheels/
 *.egg-info
+
+# code editors
 .idea/
 .vscode/
 
@@ -13,3 +15,9 @@ dev/
 
 # Virtual environments
 .venv
+
+# database files
+*.db
+
+# secrets
+.env
