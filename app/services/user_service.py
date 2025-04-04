@@ -27,8 +27,8 @@ async def get_users(session: AsyncSession, skip: int = 0, limit: int = 100) -> l
 
 
 async def create_user(session: AsyncSession, user: UserCreate) -> UserOut:
-    fake_hashed_password = get_password_hash(user.password)
-    db_user = User(email=user.email, password=fake_hashed_password)
+    hashed_password = get_password_hash(user.password)
+    db_user = User(email=user.email, password=hashed_password)
     session.add(db_user)
     await session.commit()
     await session.refresh(db_user)
