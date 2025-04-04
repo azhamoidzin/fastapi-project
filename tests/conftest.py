@@ -45,21 +45,24 @@ async def get_db_testing() -> AsyncIterator[AsyncSession]:
         finally:
             await session.close()
 
+async def setup_db() -> None:
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+        await conn.run_sync(Base.metadata.create_all)
+
+async def clear_db() -> None:
+    async with engine.begin() as conn:
+        await conn.run_sync(Base.metadata.drop_all)
+
+async def get_one_session():
+    async for session in get_db_testing():
+        return session
+
 
 @pytest.fixture()
 def test_db():
-    async def setup_db() -> None:
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.drop_all)
-            await conn.run_sync(Base.metadata.create_all)
-    async def clear_db() -> None:
-        async with engine.begin() as conn:
-            await conn.run_sync(Base.metadata.drop_all)
     asyncio.run(setup_db())
 
-    async def get_one_session():
-        async for sess_ in get_db_testing():
-            return sess_
     session = asyncio.run(get_one_session())
     try:
         yield session
