@@ -21,7 +21,7 @@ class Settings(BaseSettings):
 
     cors_settings: CORSSettings = CORSSettings()
 
-    model_config = SettingsConfigDict(env_file='../.env')
+    model_config = SettingsConfigDict(env_file=('.env', '../.env'))
 
 
 settings = Settings()

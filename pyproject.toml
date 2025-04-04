@@ -17,6 +17,7 @@ dependencies = [
 dev = [
     "mypy>=1.15.0",
     "pylint>=3.3.6",
+    "pytest>=8.3.5",
     "types-passlib>=1.7.7.20250401",
     "types-python-jose>=3.4.0.20250224",
 ]
