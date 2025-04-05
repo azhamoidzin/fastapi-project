@@ -27,6 +27,7 @@ class Settings(BaseSettings):
     )
 
     access_token_expire_minutes: int = 15
+    activation_token_expire_minutes: int = 60 * 24
 
     secret_key: str = Field(default=...)
     algorithm: str = Field(default=...)

@@ -57,3 +57,11 @@ def test_create_user(test_db):
     user = asyncio.run(create_user(test_db, user_create))
     assert user.id is not None
     assert user_create.email == user.email
+
+
+def test_activate_user(test_db, test_user_inactive):
+    from app.services.user_service import activate_user
+
+    user = asyncio.run(activate_user(test_db, "test1@example.com"))
+    assert user.is_active is True
+

@@ -2,16 +2,12 @@ from typing import Annotated
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
-from jose import JWTError, jwt
 from sqlalchemy.ext.asyncio import AsyncSession
-from pydantic import EmailStr
 
 from app.services import user_service
-from app.config import settings
 from app.database.session import get_db
-from app.database.models import User
-from app.schemas.auth import TokenData
-from app.utils.security import verify_password
+from app.schemas.user import UserInDB
+from app.utils.security import verify_password, decode_access_token
 
 
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
@@ -29,30 +25,25 @@ async def authenticate_user(session: AsyncSession, email: str, password: str):
 async def get_current_user(
     token: Annotated[str, Depends(oauth2_scheme)],
     session: AsyncSession = Depends(get_db),
-):
-    credentials_exception = HTTPException(
-        status_code=401,
-        detail="Could not validate credentials",
-        headers={"WWW-Authenticate": "Bearer"},
-    )
-    try:
-        payload = jwt.decode(
-            token, settings.secret_key, algorithms=[settings.algorithm]
-        )
-        email: EmailStr | None = payload.get("sub")
-        if email is None:
-            raise credentials_exception
-        token_data = TokenData(email=email)
-    except JWTError:
-        raise credentials_exception
-
+) -> UserInDB:
+    token_data = decode_access_token(token)
     user = await user_service.get_user_by_email(session, email=str(token_data.email))
     if user is None:
-        raise credentials_exception
+        raise HTTPException(
+            status_code=401,
+            detail="Could not validate credentials",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     return user
 
 
 async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)],
+    current_user: Annotated[UserInDB, Depends(get_current_user)],
 ):
+    if not current_user.is_active:
+        raise HTTPException(
+            status_code=400,
+            detail="Inactive user",
+            headers={"WWW-Authenticate": "Bearer"},
+        )
     return current_user

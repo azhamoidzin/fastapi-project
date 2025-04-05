@@ -1,4 +1,6 @@
-from pydantic import BaseModel, EmailStr, ConfigDict
+from typing import Annotated
+
+from pydantic import BaseModel, EmailStr, ConfigDict, Field, AfterValidator
 
 
 class UserCreate(BaseModel):
@@ -7,7 +9,7 @@ class UserCreate(BaseModel):
 
 
 class UserLogin(BaseModel):
-    email: EmailStr
+    email: Annotated[EmailStr, AfterValidator(lambda email: email.lower())]
     password: str
 
 
@@ -19,4 +21,5 @@ class UserOut(BaseModel):
 
 
 class UserInDB(UserOut):
-    password: str
+    is_active: bool = Field(exclude=True)
+    password: str = Field(exclude=True)
