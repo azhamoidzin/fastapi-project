@@ -1,4 +1,5 @@
 from fastapi import APIRouter, Depends
+from pydantic import NonNegativeInt
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.database.session import get_db
@@ -12,8 +13,8 @@ router = APIRouter(prefix="/users", tags=["Users"])
 
 @router.get("/", response_model=list[UserOut])
 async def read_users(
-    skip: int = 0,
-    limit: int = 100,
+    skip: NonNegativeInt = 0,
+    limit: NonNegativeInt = 100,
     session: AsyncSession = Depends(get_db),
     current_user: UserOut = Depends(auth.get_current_user),
 ):
