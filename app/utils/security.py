@@ -1,3 +1,7 @@
+"""
+JWT and security functions
+"""
+
 from datetime import datetime, timedelta, UTC
 
 from jose import jwt

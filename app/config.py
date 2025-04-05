@@ -10,6 +10,8 @@ class CORSSettings(BaseModel):
 
 
 class Settings(BaseSettings):
+    project_name: str = "My Project"
+
     database_url: str = "sqlite+aiosqlite:///./sql_app.db"
     database_echo: bool = True
     database_connection_args: dict = (
@@ -21,9 +23,16 @@ class Settings(BaseSettings):
     secret_key: str = Field(default=...)
     algorithm: str = Field(default=...)
 
+    smtp_host: str = Field(default=...)
+    smtp_port: int = Field(default=...)
+    email_address: str = Field(default=...)
+    email_password: str = Field(default=...)
+
     cors_settings: CORSSettings = CORSSettings()
 
-    model_config = SettingsConfigDict(env_file=(".env", "../.env"))
+    model_config = SettingsConfigDict(
+        env_file=(".env", "../.env"), case_sensitive=False
+    )
 
 
 settings = Settings()
