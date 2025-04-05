@@ -1,0 +1,19 @@
+"""Package for common HTTP exceptions"""
+
+__all__ = [
+    "INACTIVE_USER_400",
+    "INVALID_EMAIL_400",
+    "INVALID_CREDENTIALS_401",
+    "USER_NOT_ACTIVE_400",
+    "ENTITY_NOT_FOUND_404",
+    "ALREADY_EXIST_403",
+]
+
+from .http_exceptions import (
+    INACTIVE_USER_400,
+    INVALID_EMAIL_400,
+    INVALID_CREDENTIALS_401,
+    USER_NOT_ACTIVE_400,
+    ENTITY_NOT_FOUND_404,
+    ALREADY_EXIST_403,
+)

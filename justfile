@@ -1,3 +1,5 @@
+# https://github.com/casey/just
+
 # For Windows - run from Git bash shell
 set windows-shell := ["C:\\Program Files\\Git\\bin\\sh.exe","-c"]
 

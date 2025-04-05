@@ -16,7 +16,7 @@ def test_register_with_existing_email(client, test_user, mock_send_activation_em
     response = client.post(
         "/register", json={"email": "test@example.com", "password": "newpassword"}
     )
-    assert response.status_code == 400
+    assert response.status_code == 403
     data = response.json()
     assert "detail" in data
     assert "already" in data["detail"].lower()
