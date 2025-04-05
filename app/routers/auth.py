@@ -12,6 +12,7 @@ from app.schemas.user import UserOut, UserCreate
 from app.schemas.auth import Token
 from app.services import user_service
 from app.dependencies import auth
+from app.utils.security import create_access_token
 
 
 router = APIRouter(tags=["Registration and login"])
@@ -43,7 +44,7 @@ async def login_for_access_token(
             headers={"WWW-Authenticate": "Bearer"},
         )
     access_token_expires = timedelta(minutes=settings.access_token_expire_minutes)
-    access_token = auth.create_access_token(
+    access_token = create_access_token(
         data={"sub": user.email}, expires_delta=access_token_expires
     )
     return Token(access_token=access_token, token_type="bearer")

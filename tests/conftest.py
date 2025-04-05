@@ -104,6 +104,6 @@ def test_user(test_db):
 
 @pytest.fixture
 def test_token(test_user):
-    from app.dependencies.auth import create_access_token
+    from app.utils.security import create_access_token
 
     return create_access_token(data={"sub": test_user.email})

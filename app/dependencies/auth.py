@@ -1,10 +1,8 @@
-from datetime import datetime, timedelta, UTC
 from typing import Annotated
 
 from fastapi import Depends, HTTPException
 from fastapi.security import OAuth2PasswordBearer
 from jose import JWTError, jwt
-from passlib.context import CryptContext
 from sqlalchemy.ext.asyncio import AsyncSession
 from pydantic import EmailStr
 
@@ -13,18 +11,10 @@ from app.config import settings
 from app.database.session import get_db
 from app.database.models import User
 from app.schemas.auth import TokenData
+from app.utils.security import verify_password
 
 
-pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 oauth2_scheme = OAuth2PasswordBearer(tokenUrl="login")
-
-
-def verify_password(plain_password: str, hashed_password: str):
-    return pwd_context.verify(plain_password, hashed_password)
-
-
-def get_password_hash(password: str):
-    return pwd_context.hash(password)
 
 
 async def authenticate_user(session: AsyncSession, email: str, password: str):
@@ -34,19 +24,6 @@ async def authenticate_user(session: AsyncSession, email: str, password: str):
     if not verify_password(password, user.password):
         return False
     return user
-
-
-def create_access_token(data: dict, expires_delta: timedelta | None = None):
-    to_encode = data.copy()
-    if expires_delta:
-        expire = datetime.now(UTC) + expires_delta
-    else:
-        expire = datetime.now(UTC) + timedelta(minutes=15)
-    to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(
-        to_encode, settings.secret_key, algorithm=settings.algorithm
-    )
-    return encoded_jwt
 
 
 async def get_current_user(
