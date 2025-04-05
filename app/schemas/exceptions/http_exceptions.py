@@ -24,3 +24,9 @@ USER_NOT_ACTIVE_400 = HTTPException(
 ENTITY_NOT_FOUND_404 = HTTPException(status_code=404, detail="Entity not found")
 
 ALREADY_EXIST_403 = HTTPException(status_code=403, detail="Already exist")
+
+INVALID_TOKEN_422 = HTTPException(
+    status_code=422,
+    detail="Invalid token",
+    headers={"WWW-Authenticate": "Bearer"},
+)

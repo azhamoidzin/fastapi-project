@@ -1,12 +1,13 @@
 from typing import Annotated
 
-from fastapi import Depends, HTTPException
+from fastapi import Depends
 from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.services import user_service
 from app.database.session import get_db
 from app.schemas.user import UserInDB
+from app.schemas.exceptions import INVALID_CREDENTIALS_401, INACTIVE_USER_400
 from app.utils.security import verify_password, decode_access_token
 
 
@@ -29,11 +30,7 @@ async def get_current_user(
     token_data = decode_access_token(token)
     user = await user_service.get_user_by_email(session, email=str(token_data.email))
     if user is None:
-        raise HTTPException(
-            status_code=401,
-            detail="Could not validate credentials",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise INVALID_CREDENTIALS_401
     return user
 
 
@@ -41,9 +38,5 @@ async def get_current_active_user(
     current_user: Annotated[UserInDB, Depends(get_current_user)],
 ):
     if not current_user.is_active:
-        raise HTTPException(
-            status_code=400,
-            detail="Inactive user",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise INACTIVE_USER_400
     return current_user

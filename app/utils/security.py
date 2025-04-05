@@ -6,12 +6,11 @@ from datetime import datetime, timedelta, UTC
 
 from jose import jwt, JWTError
 from passlib.context import CryptContext
-from fastapi import HTTPException
 from pydantic import EmailStr
 
 from app.config import settings
 from app.schemas.auth import TokenData
-
+from app.schemas.exceptions import INVALID_CREDENTIALS_401, INVALID_TOKEN_422
 
 pwd_context = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
@@ -44,16 +43,8 @@ def decode_access_token(token: str) -> TokenData:
         )
         email: EmailStr | None = payload.get("sub")
         if email is None:
-            raise HTTPException(
-                status_code=401,
-                detail="Could not validate credentials",
-                headers={"WWW-Authenticate": "Bearer"},
-            )
+            raise INVALID_CREDENTIALS_401
         token_data = TokenData(email=email)
     except JWTError:
-        raise HTTPException(
-            status_code=422,
-            detail="Invalid token",
-            headers={"WWW-Authenticate": "Bearer"},
-        )
+        raise INVALID_TOKEN_422
     return token_data

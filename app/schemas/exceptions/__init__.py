@@ -7,6 +7,7 @@ __all__ = [
     "USER_NOT_ACTIVE_400",
     "ENTITY_NOT_FOUND_404",
     "ALREADY_EXIST_403",
+    "INVALID_TOKEN_422",
 ]
 
 from .http_exceptions import (
@@ -16,4 +17,5 @@ from .http_exceptions import (
     USER_NOT_ACTIVE_400,
     ENTITY_NOT_FOUND_404,
     ALREADY_EXIST_403,
+    INVALID_TOKEN_422,
 )
