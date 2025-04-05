@@ -8,7 +8,7 @@ from pydantic import validate_email
 from pydantic_core import PydanticCustomError
 
 from app.config import settings
-from app.database.session import get_db
+from app.database import get_db
 from app.schemas.user import UserOut, UserCreate
 from app.schemas.auth import Token
 from app.schemas.exceptions import (

@@ -3,10 +3,9 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
 
-from app.database.session import create_database
+from app.database import create_database
 from app.config import settings
-from app.routers.auth import router as auth_router
-from app.routers.users import router as users_router
+from app.routers import auth_router, users_router
 
 
 @asynccontextmanager

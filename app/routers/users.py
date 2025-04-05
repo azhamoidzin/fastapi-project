@@ -2,7 +2,7 @@ from fastapi import APIRouter, Depends
 from pydantic import NonNegativeInt
 from sqlalchemy.ext.asyncio import AsyncSession
 
-from app.database.session import get_db
+from app.database import get_db
 from app.schemas.user import UserOut
 from app.services import user_service
 from app.dependencies import auth

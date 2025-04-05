@@ -5,7 +5,7 @@ from fastapi.security import OAuth2PasswordBearer
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from app.services import user_service
-from app.database.session import get_db
+from app.database import get_db
 from app.schemas.user import UserInDB
 from app.schemas.exceptions import INVALID_CREDENTIALS_401, INACTIVE_USER_400
 from app.utils.security import verify_password, decode_access_token

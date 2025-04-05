@@ -10,7 +10,7 @@ import pytest
 from fastapi.testclient import TestClient
 
 from app.main import app
-from app.database.session import (
+from app.database import (
     get_db,
     async_sessionmaker,
     create_async_engine,
