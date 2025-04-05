@@ -1,3 +1,5 @@
+from typing import Literal
+
 from pydantic_settings import BaseSettings, SettingsConfigDict
 from pydantic import Field, BaseModel
 
@@ -7,6 +9,12 @@ class CORSSettings(BaseModel):
     allow_credentials: bool = True
     allow_methods: list["str"] = ["*"]
     allow_headers: list["str"] = ["*"]
+
+
+class SMTPSettings(BaseModel):
+    smtp_connection: Literal["SSL", "TLS"] = "TLS"
+    smtp_host: str = "smtp.gmail.com"
+    smtp_port: int = 587 if smtp_connection == "TLS" else 465
 
 
 class Settings(BaseSettings):
@@ -23,8 +31,7 @@ class Settings(BaseSettings):
     secret_key: str = Field(default=...)
     algorithm: str = Field(default=...)
 
-    smtp_host: str = Field(default=...)
-    smtp_port: int = Field(default=...)
+    smtp_settings: SMTPSettings = SMTPSettings()
     email_address: str = Field(default=...)
     email_password: str = Field(default=...)
 
