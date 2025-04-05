@@ -43,13 +43,15 @@ def create_access_token(data: dict, expires_delta: timedelta | None = None):
     else:
         expire = datetime.now(UTC) + timedelta(minutes=15)
     to_encode.update({"exp": expire})
-    encoded_jwt = jwt.encode(to_encode, settings.secret_key, algorithm=settings.algorithm)
+    encoded_jwt = jwt.encode(
+        to_encode, settings.secret_key, algorithm=settings.algorithm
+    )
     return encoded_jwt
 
 
 async def get_current_user(
-        token: Annotated[str, Depends(oauth2_scheme)],
-        session: AsyncSession = Depends(get_db)
+    token: Annotated[str, Depends(oauth2_scheme)],
+    session: AsyncSession = Depends(get_db),
 ):
     credentials_exception = HTTPException(
         status_code=401,
@@ -57,7 +59,9 @@ async def get_current_user(
         headers={"WWW-Authenticate": "Bearer"},
     )
     try:
-        payload = jwt.decode(token, settings.secret_key, algorithms=[settings.algorithm])
+        payload = jwt.decode(
+            token, settings.secret_key, algorithms=[settings.algorithm]
+        )
         email: EmailStr | None = payload.get("sub")
         if email is None:
             raise credentials_exception
@@ -70,7 +74,8 @@ async def get_current_user(
         raise credentials_exception
     return user
 
+
 async def get_current_active_user(
-    current_user: Annotated[User, Depends(get_current_user)]
+    current_user: Annotated[User, Depends(get_current_user)],
 ):
     return current_user

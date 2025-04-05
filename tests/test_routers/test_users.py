@@ -5,8 +5,7 @@ def test_users_me_unauthenticated(client):
 
 def test_users_me_authenticated(client, test_user, test_token):
     response = client.get(
-        "/users/me",
-        headers={"Authorization": f"Bearer {test_token}"}
+        "/users/me", headers={"Authorization": f"Bearer {test_token}"}
     )
     assert response.status_code == 200
     data = response.json()

@@ -11,9 +11,9 @@ from app.routers.users import router as users_router
 
 @asynccontextmanager
 async def lifespan(app_: FastAPI):
-   await create_database()
-   print("Database initialised")
-   yield
+    await create_database()
+    print("Database initialised")
+    yield
 
 
 app = FastAPI(lifespan=lifespan)
@@ -30,5 +30,5 @@ app.add_middleware(
     allow_headers=settings.cors_settings.allow_headers,
 )
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     uvicorn.run(app)

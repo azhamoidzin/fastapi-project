@@ -3,16 +3,18 @@ from pydantic import Field, BaseModel
 
 
 class CORSSettings(BaseModel):
-    allow_origins: list['str'] = ['*']
+    allow_origins: list["str"] = ["*"]
     allow_credentials: bool = True
-    allow_methods: list['str'] = ["*"]
-    allow_headers: list['str'] = ["*"]
+    allow_methods: list["str"] = ["*"]
+    allow_headers: list["str"] = ["*"]
 
 
 class Settings(BaseSettings):
     database_url: str = "sqlite+aiosqlite:///./sql_app.db"
     database_echo: bool = True
-    database_connection_args: dict = {"check_same_thread": False} if "sqlite" in database_url else {}
+    database_connection_args: dict = (
+        {"check_same_thread": False} if "sqlite" in database_url else {}
+    )
 
     access_token_expire_minutes: int = 15
 
@@ -21,7 +23,7 @@ class Settings(BaseSettings):
 
     cors_settings: CORSSettings = CORSSettings()
 
-    model_config = SettingsConfigDict(env_file=('.env', '../.env'))
+    model_config = SettingsConfigDict(env_file=(".env", "../.env"))
 
 
 settings = Settings()

@@ -9,7 +9,7 @@ engine = create_async_engine(
     settings.database_url,
     echo=settings.database_echo,
     future=True,
-    connect_args=settings.database_connection_args
+    connect_args=settings.database_connection_args,
 )
 
 AsyncSessionLocal = async_sessionmaker(
@@ -18,11 +18,12 @@ AsyncSessionLocal = async_sessionmaker(
     expire_on_commit=False,
     autoflush=False,
     autocommit=False,
-
 )
+
 
 class Base(DeclarativeBase):
     pass
+
 
 async def get_db() -> AsyncIterator[AsyncSession]:
     """

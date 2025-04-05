@@ -21,7 +21,9 @@ async def get_user_by_email(session: AsyncSession, email: str) -> UserInDB | Non
     return user
 
 
-async def get_users(session: AsyncSession, skip: int = 0, limit: int = 100) -> list[UserOut]:
+async def get_users(
+    session: AsyncSession, skip: int = 0, limit: int = 100
+) -> list[UserOut]:
     result = await session.execute(select(User).offset(skip).limit(limit))
     return [UserOut.model_validate(user) for user in result.scalars().all()]
 

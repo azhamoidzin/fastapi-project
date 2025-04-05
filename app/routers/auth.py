@@ -14,7 +14,7 @@ from app.services import user_service
 from app.dependencies import auth
 
 
-router = APIRouter(tags=['Registration and login'])
+router = APIRouter(tags=["Registration and login"])
 
 
 @router.post("/register", response_model=UserOut)
@@ -28,7 +28,7 @@ async def register_user(user: UserCreate, session: AsyncSession = Depends(get_db
 @router.post("/login", response_model=Token)
 async def login_for_access_token(
     form_data: Annotated[OAuth2PasswordRequestForm, Depends()],
-    session: AsyncSession = Depends(get_db)
+    session: AsyncSession = Depends(get_db),
 ):
     try:
         email = validate_email(form_data.username)[1].lower()

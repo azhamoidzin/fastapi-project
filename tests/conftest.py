@@ -1,13 +1,18 @@
 """
 Wrap all async sqlalchemy code into sync code
 """
+
 import asyncio
 from typing import AsyncIterator
 import pytest
 from fastapi.testclient import TestClient
 from app.main import app
 from app.database.session import (
-    get_db, async_sessionmaker, create_async_engine, AsyncSession, Base,
+    get_db,
+    async_sessionmaker,
+    create_async_engine,
+    AsyncSession,
+    Base,
 )
 from app.config import Settings
 
@@ -31,6 +36,7 @@ TestingAsyncSessionLocal = async_sessionmaker(
     autocommit=False,
 )
 
+
 async def get_db_testing() -> AsyncIterator[AsyncSession]:
     """
     Async generator that yields database sessions.
@@ -45,14 +51,17 @@ async def get_db_testing() -> AsyncIterator[AsyncSession]:
         finally:
             await session.close()
 
+
 async def setup_db() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
         await conn.run_sync(Base.metadata.create_all)
 
+
 async def clear_db() -> None:
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.drop_all)
+
 
 async def get_one_session():
     async for session in get_db_testing():
@@ -96,4 +105,5 @@ def test_user(test_db):
 @pytest.fixture
 def test_token(test_user):
     from app.dependencies.auth import create_access_token
+
     return create_access_token(data={"sub": test_user.email})
