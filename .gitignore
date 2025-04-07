@@ -15,6 +15,7 @@ dev/
 
 # Virtual environments
 .venv
+data
 
 # database files
 *.db

@@ -24,7 +24,7 @@ from app.config import Settings
 
 
 settings = Settings(
-    database_url="sqlite+aiosqlite:///:memory:",
+    test_mode=True,
     database_connection_args={"check_same_thread": False},
 )
 

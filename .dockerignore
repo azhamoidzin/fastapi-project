@@ -3,6 +3,7 @@
 .vscode
 .git
 .venv
+data
 
 # Python-generated files
 __pycache__/
