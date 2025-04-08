@@ -12,4 +12,7 @@ ruff:
 test:
     uv run pytest tests
 
+development:
+    TEST_MODE=True uvicorn app.main:app --host 127.0.0.1 --port 8000 --reload
+
 all: mypy ruff test

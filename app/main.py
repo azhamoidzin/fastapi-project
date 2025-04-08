@@ -1,7 +1,6 @@
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
-import uvicorn
 
 from app.database import create_database
 from app.config import settings
@@ -30,4 +29,6 @@ app.add_middleware(
 )
 
 if __name__ == "__main__":
+    import uvicorn
+
     uvicorn.run(app)
