@@ -14,7 +14,13 @@ async def lifespan(app_: FastAPI):
     yield
 
 
-app = FastAPI(lifespan=lifespan)
+app = FastAPI(
+    lifespan=lifespan,
+    # disable doc urls in production mode
+    docs_url="/docs" if settings.test_mode else None,
+    redoc_url="/redoc" if settings.test_mode else None,
+    openapi_url="/openapi.json" if settings.test_mode else None,
+)
 
 app.include_router(auth_router)
 app.include_router(users_router)
@@ -30,5 +36,4 @@ app.add_middleware(
 
 if __name__ == "__main__":
     import uvicorn
-
     uvicorn.run(app)
