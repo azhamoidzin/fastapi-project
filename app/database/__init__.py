@@ -7,6 +7,7 @@ __all__ = [
     "async_sessionmaker",
     "create_async_engine",
     "AsyncSession",
+    "User",
 ]
 
 from .session import (
@@ -16,4 +17,7 @@ from .session import (
     async_sessionmaker,
     create_async_engine,
     AsyncSession,
+)
+from .models import (
+    User,
 )

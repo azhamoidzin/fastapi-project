@@ -1,17 +1,20 @@
 [project]
 name = "pet-social-network"
-version = "0.1.0"
+version = "0.2.0"
 description = "Add your description here"
 readme = "README.md"
 requires-python = ">=3.13"
 dependencies = [
     "aiosmtplib>=4.0.0",
     "aiosqlite>=0.21.0",
+    "alembic>=1.15.2",
+    "asyncpg>=0.30.0",
     "fastapi[all]>=0.115.12",
     "passlib[bcrypt]>=1.7.4",
     "pydantic-settings>=2.8.1",
     "python-jose[cryptography]>=3.4.0",
     "sqlalchemy[asyncio]>=2.0.40",
+    "uvicorn>=0.34.0",
 ]
 
 [dependency-groups]

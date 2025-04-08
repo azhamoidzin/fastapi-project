@@ -1,0 +1,14 @@
+# general
+.idea
+.vscode
+.git
+.venv
+data
+
+# Python-generated files
+__pycache__/
+*.py[oc]
+build/
+dist/
+wheels/
+*.egg-info

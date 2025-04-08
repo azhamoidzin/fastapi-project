@@ -1,7 +1,7 @@
 from typing import Literal
 
 from pydantic_settings import BaseSettings, SettingsConfigDict
-from pydantic import Field, BaseModel
+from pydantic import Field, BaseModel, computed_field
 
 
 class CORSSettings(BaseModel):
@@ -19,11 +19,31 @@ class SMTPSettings(BaseModel):
 
 class Settings(BaseSettings):
     project_name: str = "My Project"
+    test_mode: bool = False
 
-    database_url: str = "sqlite+aiosqlite:///./sql_app.db"
+    database_host: str = Field(default=...)
+    database_port: str = Field(default=...)
+    database_user: str = Field(default=...)
+    database_password: str = Field(default=...)
+    database_db: str = Field(default=...)
+    database_name: str = "postgresql"
+    database_driver: str = "asyncpg"
+
+    @property
+    def database_url(self) -> str:
+        return (
+            (
+                f"{self.database_name}+{self.database_driver}://"
+                f"{self.database_user}:{self.database_password}@"
+                f"{self.database_host}:{self.database_port}/{self.database_db}"
+            )
+            if not self.test_mode
+            else "sqlite+aiosqlite:///:memory:"
+        )
+
     database_echo: bool = True
     database_connection_args: dict = (
-        {"check_same_thread": False} if "sqlite" in database_url else {}
+        {"check_same_thread": False} if "sqlite" in database_name else {}
     )
 
     access_token_expire_minutes: int = 15
